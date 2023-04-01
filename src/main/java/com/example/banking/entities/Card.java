@@ -29,4 +29,6 @@ public class Card extends Base {
     private CardType cardType;
     @ManyToOne
     private Permission cardPermission;
+    @ManyToOne
+    private CardProcessor card_processor;
 }
