@@ -11,16 +11,12 @@ import java.util.Set;
 
 @Entity
 @Data
-public class Account extends Base {
+public class Loan extends Base {
+    private String loan_name;
 
-    private String accountNumber;
-
-    @ManyToOne
-    private Client client;
-
-    @OneToMany(mappedBy = "account")
-    private Set<Card> cards = new HashSet<>();
+    @OneToMany(mappedBy = "loan")
+    private Set<Account> account = new HashSet<>();
 
     @ManyToOne
-    private Loan loan;
+    private Amount loan_amount;
 }

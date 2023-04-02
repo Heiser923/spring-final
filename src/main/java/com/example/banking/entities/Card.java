@@ -25,4 +25,10 @@ public class Card extends Base {
 
     @OneToMany (mappedBy = "card")
     private Set<Transaction> transaction = new HashSet<>();
+    @ManyToOne
+    private CardType cardType;
+    @ManyToOne
+    private Permission cardPermission;
+    @ManyToOne
+    private CardProcessor card_processor;
 }
