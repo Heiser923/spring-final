@@ -20,4 +20,7 @@ public class Client extends Base {
 
     @OneToMany(mappedBy = "client")
     private Set<Account> accounts  = new HashSet<>();
+
+    @ManyToOne
+    private Address client_address;
 }
