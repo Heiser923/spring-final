@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @Data
 public class Amount extends Base {
-    private Float amount;
+    private float amount;
 
     @OneToMany(mappedBy = "loan_amount")
     private Set<Loan> loans = new HashSet<>();
