@@ -10,6 +10,6 @@ import lombok.Data;
 @Data
 public class Country extends Base {
     private String country_name;
-    @OneToOne(mappedBy = "country")
-    private Address address;
+    @OneToOne(mappedBy = "address_country")
+    private Address address_country;
 }

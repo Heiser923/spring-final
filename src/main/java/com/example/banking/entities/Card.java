@@ -14,21 +14,18 @@ import java.util.Set;
 @Data
 public class Card extends Base {
 
-    private String cardName;
+    private String cardNumber;
     private Time expireDate;
 
     @ManyToOne
-    private Account account;
+    private Account account_card;
 
     @ManyToOne
-    private CardStatus cardStatus;
-
+    private CardStatus card_status;
     @OneToMany (mappedBy = "card")
     private Set<Transaction> transaction = new HashSet<>();
     @ManyToOne
-    private CardType cardType;
-    @ManyToOne
-    private Permission cardPermission;
+    private CardType card_type;
     @ManyToOne
     private CardProcessor card_processor;
 }

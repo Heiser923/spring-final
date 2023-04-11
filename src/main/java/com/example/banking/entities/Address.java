@@ -13,10 +13,11 @@ public class Address extends Base {
     private String address_name;
     private String street_name;
 
-    @OneToMany(mappedBy = "client_address")
-    private Set<Client> client_address = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private Country country;
+    @JoinColumn(name = "country_id", referencedColumnName = "id")
+    private Country address_country;
 }
