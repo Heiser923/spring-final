@@ -10,7 +10,7 @@ public class Address extends Base {
     private String street_name;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumn(name = "client_id")
     private Client client;
 
     @OneToOne(cascade = CascadeType.ALL)
