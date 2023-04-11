@@ -8,6 +8,6 @@ public interface ClientService {
     Client addClient(Client client);
     Client findById(Long id);
     String deleteById(Long id);
-    Client updateById(Long id, Client client);
+    String updateById(Long id, Client client);
     List<Client> getAll();
 }

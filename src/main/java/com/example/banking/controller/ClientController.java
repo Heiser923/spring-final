@@ -51,7 +51,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public Client updateClient(@PathVariable Long id, @RequestBody ClientRequest req){
+    public String updateClient(@PathVariable Long id, @RequestBody ClientRequest req){
         Client client = new Client();
         BeanUtils.copyProperties(req, client);
         client.setGender(Gender.valueOf(req.getGender()));
