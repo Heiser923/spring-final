@@ -13,6 +13,6 @@ import java.util.Set;
 public class CardType extends Base {
     private String card_name;
 
-    @OneToMany (mappedBy = "cardType")
+    @OneToMany (mappedBy = "card_type")
     private Set<Card> card = new HashSet<>();
 }

@@ -13,6 +13,6 @@ import java.util.Set;
 public class Role extends Base {
     private String role_name;
 
-    @OneToMany(mappedBy = "Permission_role")
-    private Set<Permission> permissions = new HashSet<>();
+    @OneToMany(mappedBy = "permission_role")
+    private Set<Permission> permission_role = new HashSet<>();
 }

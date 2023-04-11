@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,11 +17,11 @@ public class Client extends Base {
     private String lastName;
     private String ssn;
     private String displayName;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client_account")
     private Set<Account> accounts  = new HashSet<>();
-
-    @ManyToOne
-    private Address client_address;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<Address> addresses;
 }

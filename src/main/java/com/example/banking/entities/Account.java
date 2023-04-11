@@ -12,13 +12,12 @@ import java.util.Set;
 @Entity
 @Data
 public class Account extends Base {
-
     private String accountNumber;
 
     @ManyToOne
-    private Client client;
+    private Client client_account;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account_card")
     private Set<Card> cards = new HashSet<>();
 
     @ManyToOne
