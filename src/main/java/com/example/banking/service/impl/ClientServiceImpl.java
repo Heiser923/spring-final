@@ -1,8 +1,6 @@
 package com.example.banking.service.impl;
 
-import com.example.banking.entities.Address;
 import com.example.banking.entities.Client;
-import com.example.banking.entities.enums.Gender;
 import com.example.banking.repository.ClientRepository;
 import com.example.banking.service.ClientService;
 import org.springframework.stereotype.Service;

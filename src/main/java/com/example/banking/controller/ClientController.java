@@ -23,21 +23,20 @@ public class ClientController {
 
     @PostMapping
     public String addClient(@RequestBody ClientRequest req){
-        Client mockClient = new Client();
-        BeanUtils.copyProperties(req, mockClient);
-        mockClient.setGender(Gender.valueOf(req.getGender()));
+        Client client = new Client();
+        BeanUtils.copyProperties(req, client);
+        client.setGender(Gender.valueOf(req.getGender()));
         List<Address> addressesObjectList = new ArrayList<>();
         if(!ObjectUtils.isEmpty(req.getAddresses())){
-            System.out.println("Helloworld");
             for(Address addressAddReq : req.getAddresses()){
                 Address addressObject = new Address();
                 BeanUtils.copyProperties(addressAddReq, addressObject);
-                addressObject.setClient(mockClient);
+                addressObject.setClient(client);
                 addressesObjectList.add(addressObject);
             }
-            mockClient.setAddresses(addressesObjectList);
+            client.setAddresses(addressesObjectList);
         }
-        clientService.addClient(mockClient);
+        clientService.addClient(client);
         return req.toString();
     }
 
@@ -53,10 +52,10 @@ public class ClientController {
 
     @PutMapping("/{id}")
     public Client updateClient(@PathVariable Long id, @RequestBody ClientRequest req){
-        Client mockClient = new Client();
-        BeanUtils.copyProperties(req, mockClient);
-        mockClient.setGender(Gender.valueOf(req.getGender()));
-        return clientService.updateById(id, mockClient);
+        Client client = new Client();
+        BeanUtils.copyProperties(req, client);
+        client.setGender(Gender.valueOf(req.getGender()));
+        return clientService.updateById(id, client);
     }
 
     @GetMapping
