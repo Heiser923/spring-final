@@ -7,6 +7,6 @@ import lombok.Data;
 @Entity
 @Data
 public class BankDetail extends Base {
-    private String bank_name;
-    private String bank_description;
+    private String bankName;
+    private String bankDescription;
 }
