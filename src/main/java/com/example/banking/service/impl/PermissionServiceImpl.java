@@ -1,8 +1,11 @@
 package com.example.banking.service.impl;
 
 import com.example.banking.entities.Permission;
+import com.example.banking.entities.Role;
 import com.example.banking.repository.PermissionRepository;
 import com.example.banking.service.PermissionService;
+import com.example.banking.service.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -10,9 +13,11 @@ import java.util.List;
 @Service
 public class PermissionServiceImpl implements PermissionService{
     private PermissionRepository permissionRepository;
+    private RoleService roleService;
 
-    public PermissionServiceImpl(PermissionRepository permissionRepository) {
+    public PermissionServiceImpl(PermissionRepository permissionRepository, RoleService roleService) {
         this.permissionRepository = permissionRepository;
+        this.roleService = roleService;
     }
 
     @Override
@@ -49,5 +54,11 @@ public class PermissionServiceImpl implements PermissionService{
     @Override
     public List<Permission> getAll() {
         return permissionRepository.findAll();
+    }
+
+    @Override
+    public List<Permission> getByRoleId(Long roleId) {
+        Role role = roleService.findById(roleId);
+        return permissionRepository.findByRole(role);
     }
 }

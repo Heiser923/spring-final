@@ -10,4 +10,6 @@ public interface PermissionService {
     String deleteById(Long id);
     String updateById(Long id, Permission permission);
     List<Permission> getAll();
+
+    List<Permission> getByRoleId (Long roleId);
 }

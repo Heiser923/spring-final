@@ -12,7 +12,6 @@ import java.util.List;
 @Data
 public class Role extends Base {
     private String role_name;
-
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL , orphanRemoval = true)
     @JsonIgnoreProperties("role")
     private List<Permission> permissions;
