@@ -1,10 +1,7 @@
 package com.example.banking.entities;
 
 import com.example.banking.entities.bases.Base;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -16,7 +13,8 @@ public class Permission extends Base {
     private String permission_name;
 
     @ManyToOne
-    private Role permission_role;
+    @JoinColumn(name = "role_id")
+    private Role role;
     @OneToOne(mappedBy = "card_permission")
     private CardStatus card_status;
 }
