@@ -1,4 +1,4 @@
-package com.example.configuration;
+package com.example.banking.configuration;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;

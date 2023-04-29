@@ -1,4 +1,4 @@
-package com.example.configuration.exceptions;
+package com.example.banking.configuration.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

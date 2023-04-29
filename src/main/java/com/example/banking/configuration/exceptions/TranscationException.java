@@ -1,4 +1,4 @@
-package com.example.configuration.exceptions;
+package com.example.banking.configuration.exceptions;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

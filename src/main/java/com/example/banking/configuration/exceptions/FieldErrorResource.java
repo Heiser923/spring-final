@@ -1,4 +1,4 @@
-package com.example.configuration.exceptions;
+package com.example.banking.configuration.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
