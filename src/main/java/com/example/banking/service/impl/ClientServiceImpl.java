@@ -6,7 +6,6 @@ import com.example.banking.service.ClientService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,13 +25,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public String deleteById(Long id) {
+    public boolean deleteById(Long id) {
         Client client = clientRepository.findById(id).orElse(null);
         if(!ObjectUtils.isEmpty(client)){
             clientRepository.deleteById(id);
-            return "Client Has Been Deleted";
+            return false;
         }
-        return "Client " + id + " Doesn't Exist In The World";
+        return true;
     }
 
     @Override

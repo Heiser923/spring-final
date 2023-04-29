@@ -3,6 +3,8 @@ package com.example.banking.controller;
 import com.example.banking.entities.Address;
 import com.example.banking.entities.Client;
 import com.example.banking.entities.enums.Gender;
+import com.example.banking.entities.response.ApiResponse;
+import com.example.banking.entities.response.ApiStatus;
 import com.example.banking.request.ClientRequest;
 import com.example.banking.service.ClientService;
 import org.springframework.beans.BeanUtils;
@@ -46,8 +48,9 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteClient(@PathVariable Long id){
-        return clientService.deleteById(id);
+    public ApiResponse deleteClient(@PathVariable Long id){
+        if (clientService.deleteById(id)) return new ApiResponse(ApiStatus.FAI_DELETED.getCode(), ApiStatus.FAI_DELETED.getMessage());
+        return new ApiResponse(ApiStatus.SUC_DELETED.getCode(), ApiStatus.SUC_DELETED.getMessage());
     }
 
     @PutMapping("/{id}")
