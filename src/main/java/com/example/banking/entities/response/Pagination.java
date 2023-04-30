@@ -29,4 +29,8 @@ public class Pagination {
         return  this.page*this.size;
     }
 
+    public Integer getIndexPageable () {
+        return this.page -1;
+    }
+
 }

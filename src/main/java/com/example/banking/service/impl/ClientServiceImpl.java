@@ -61,7 +61,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<Client> getAll(Pagination pagination) {
-        Page<Client> clients = clientRepository.findAll(PageRequest.of(pagination.getPage(), pagination.getSize()));
+        Page<Client> clients = clientRepository.findAll(PageRequest.of(pagination.getIndexPageable(), pagination.getSize()));
         pagination.setTotalCounts(clients.getTotalElements());
         return clients.getContent();
     }
