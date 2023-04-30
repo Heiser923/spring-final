@@ -2,8 +2,11 @@ package com.example.banking.service.impl;
 
 import com.example.banking.configuration.exceptions.NotFoundException;
 import com.example.banking.entities.Client;
+import com.example.banking.entities.response.Pagination;
 import com.example.banking.repository.ClientRepository;
 import com.example.banking.service.ClientService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -57,8 +60,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> getAll() {
-        return clientRepository.findAll();
+    public List<Client> getAll(Pagination pagination) {
+        Page<Client> clients = clientRepository.findAll(PageRequest.of(pagination.getPage(), pagination.getSize()));
+        pagination.setTotalCounts(clients.getTotalElements());
+        return clients.getContent();
     }
 
 }

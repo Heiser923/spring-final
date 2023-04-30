@@ -7,6 +7,7 @@ import com.example.banking.entities.Client;
 import com.example.banking.entities.enums.Gender;
 import com.example.banking.entities.response.ApiResponse;
 import com.example.banking.entities.response.ApiStatus;
+import com.example.banking.entities.response.Pagination;
 import com.example.banking.request.ClientRequest;
 import com.example.banking.service.ClientService;
 import org.springframework.beans.BeanUtils;
@@ -45,8 +46,9 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public Client getClientId(@PathVariable Long id){
-        return clientService.findById(id);
+    public ApiResponse<Client> getClientId(@PathVariable Long id){
+        Client client = clientService.findById(id);
+        return new ApiResponse<Client>(ApiStatus.SUC_RETRIEVED.getCode(), ApiStatus.SUC_RETRIEVED.getMessage(), client);
     }
 
     @DeleteMapping("/{id}")
@@ -69,7 +71,8 @@ public class ClientController {
     }
 
     @GetMapping
-    public List<Client> getAllClient(){
-        return clientService.getAll();
+    public ApiResponse<List<Client>> getAllClient(Pagination pagination){
+        List<Client> clients = clientService.getAll(pagination);
+        return new ApiResponse<List<Client>>(ApiStatus.SUC_RETRIEVED.getCode(), ApiStatus.SUC_RETRIEVED.getMessage(), clients, pagination);
     }
 }
