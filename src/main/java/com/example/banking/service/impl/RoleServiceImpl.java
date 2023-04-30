@@ -1,8 +1,13 @@
 package com.example.banking.service.impl;
 
+import com.example.banking.configuration.exceptions.NotFoundException;
+import com.example.banking.entities.Permission;
 import com.example.banking.entities.Role;
+import com.example.banking.entities.response.Pagination;
 import com.example.banking.repository.RoleRepository;
 import com.example.banking.service.RoleService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -23,32 +28,28 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role findById(Long id) {
-        return roleRepository.findById(id).orElse(null);
+        return roleRepository.findById(id).orElseThrow(() -> new NotFoundException());
     }
 
     @Override
-    public String deleteById(Long id) {
-        Role role = roleRepository.findById(id).orElse(null);
-        if(!ObjectUtils.isEmpty(role)){
-            roleRepository.deleteById(id);
-            return "Role Has Been Deleted";
-        }
-        return "Role " + id + " Doesn't Exist In The World";
+    public void deleteById(Long id) {
+        this.findById(id);
+        roleRepository.deleteById(id);
     }
 
     @Override
-    public String updateById(Long id, Role role) {
+    public void updateById(Long id, Role role) {
         Role roleToUpdate = this.findById(id);
         if(!ObjectUtils.isEmpty(roleToUpdate)){
             roleToUpdate.setRole_name(role.getRole_name());
             roleRepository.save(roleToUpdate);
-            return "Update Successfully";
         }
-        return "Update Not Successfully";
     }
 
     @Override
-    public List<Role> getAll() {
-        return roleRepository.findAll();
+    public List<Role> getAll(Pagination pagination) {
+        Page<Role> roles = roleRepository.findAll(PageRequest.of(pagination.getIndexPageable(), pagination.getSize()));
+        pagination.setTotalCounts(roles.getTotalElements());
+        return roles.getContent();
     }
 }

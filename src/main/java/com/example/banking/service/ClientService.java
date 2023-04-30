@@ -9,6 +9,6 @@ public interface ClientService {
     Client addClient(Client client);
     Client findById(Long id);
     void deleteById(Long id);
-    String updateById(Long id, Client client);
+    void updateById(Long id, Client client);
     List<Client> getAll(Pagination pagination);
 }

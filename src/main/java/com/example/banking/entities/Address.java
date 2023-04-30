@@ -1,5 +1,6 @@
 package com.example.banking.entities;
 import com.example.banking.entities.bases.Base;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,7 +14,8 @@ public class Address extends Base {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "country_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    @JsonIgnoreProperties("addresses")
     private Country address_country;
 }

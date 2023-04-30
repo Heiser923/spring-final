@@ -35,7 +35,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public String updateById(Long id, Client client) {
+    public void updateById(Long id, Client client) {
         Client clientToUpdate = this.findById(id);
         if(!ObjectUtils.isEmpty(clientToUpdate)){
             clientToUpdate.setFirstName(client.getFirstName());
@@ -54,9 +54,7 @@ public class ClientServiceImpl implements ClientService {
 //                clientToUpdate.getAddresses().addAll(addressList);
 //            }
             clientRepository.save(clientToUpdate);
-            return "Update Successfully";
         }
-        return "Update Not Successfully";
     }
 
     @Override

@@ -1,11 +1,16 @@
 package com.example.banking.service.impl;
 
+import com.example.banking.configuration.exceptions.NotFoundException;
+import com.example.banking.entities.Country;
 import com.example.banking.entities.Permission;
 import com.example.banking.entities.Role;
+import com.example.banking.entities.response.Pagination;
 import com.example.banking.repository.PermissionRepository;
 import com.example.banking.service.PermissionService;
 import com.example.banking.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -27,33 +32,29 @@ public class PermissionServiceImpl implements PermissionService{
 
     @Override
     public Permission findById(Long id) {
-        return permissionRepository.findById(id).orElse(null);
+        return permissionRepository.findById(id).orElseThrow(() -> new NotFoundException());
     }
 
     @Override
-    public String deleteById(Long id) {
-        Permission permission = permissionRepository.findById(id).orElse(null);
-        if(!ObjectUtils.isEmpty(permission)){
-            permissionRepository.deleteById(id);
-            return "Permission Has Been Deleted";
-        }
-        return "Permission " + id + " Doesn't Exist In The World";
+    public void deleteById(Long id) {
+        this.findById(id);
+        permissionRepository.deleteById(id);
     }
 
     @Override
-    public String updateById(Long id, Permission permission) {
+    public void updateById(Long id, Permission permission) {
         Permission permissionToUpdate = this.findById(id);
         if(!ObjectUtils.isEmpty(permissionToUpdate)){
             permissionToUpdate.setPermission_name(permission.getPermission_name());
             permissionRepository.save(permissionToUpdate);
-            return "Update Successfully";
         }
-        return "Update Not Successfully";
     }
 
     @Override
-    public List<Permission> getAll() {
-        return permissionRepository.findAll();
+    public List<Permission> getAll(Pagination pagination) {
+        Page<Permission> permissions = permissionRepository.findAll(PageRequest.of(pagination.getIndexPageable(), pagination.getSize()));
+        pagination.setTotalCounts(permissions.getTotalElements());
+        return permissions.getContent();
     }
 
     @Override

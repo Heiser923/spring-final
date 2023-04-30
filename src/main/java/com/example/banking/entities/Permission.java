@@ -1,6 +1,7 @@
 package com.example.banking.entities;
 
 import com.example.banking.entities.bases.Base;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,7 +12,6 @@ public class Permission extends Base {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
+    @JsonIgnoreProperties("permissions")
     private Role role;
-    @OneToOne(mappedBy = "card_permission")
-    private CardStatus card_status;
 }

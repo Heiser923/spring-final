@@ -1,9 +1,14 @@
 package com.example.banking.service.impl;
 
+import com.example.banking.configuration.exceptions.NotFoundException;
+import com.example.banking.entities.Account;
 import com.example.banking.entities.Card;
 import com.example.banking.entities.CardStatus;
+import com.example.banking.entities.response.Pagination;
 import com.example.banking.repository.CardRepository;
 import com.example.banking.service.CardService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -24,33 +29,29 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Card findById(Long id) {
-        return cardRepository.findById(id).orElse(null);
+        return cardRepository.findById(id).orElseThrow(() -> new NotFoundException());
     }
 
     @Override
-    public String deleteById(Long id) {
-        Card card = cardRepository.findById(id).orElse(null);
-        if(!ObjectUtils.isEmpty(card)){
-            cardRepository.deleteById(id);
-            return "Country Has Been Deleted";
-        }
-        return "Country " + id + " Doesn't Exist In The World";
+    public void deleteById(Long id) {
+        this.findById(id);
+        cardRepository.deleteById(id);
     }
 
     @Override
-    public String updateById(Long id, Card card) {
+    public void updateById(Long id, Card card) {
         Card cardToUpdate = this.findById(id);
         if(!ObjectUtils.isEmpty(cardToUpdate)){
             cardToUpdate.setCardNumber(card.getCardNumber());
-            cardToUpdate.setExpireDate(card.getExpireDate());
+//            cardToUpdate.setExpireDate(card.getExpireDate());
             cardRepository.save(cardToUpdate);
-            return "Update Successfully";
         }
-        return "Update Not Successfully";
     }
 
     @Override
-    public List<Card> getAll() {
-        return cardRepository.findAll();
+    public List<Card> getAll(Pagination pagination) {
+        Page<Card> cards = cardRepository.findAll(PageRequest.of(pagination.getIndexPageable(), pagination.getSize()));
+        pagination.setTotalCounts(cards.getTotalElements());
+        return cards.getContent();
     }
 }

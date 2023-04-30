@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressRequest {
-    private String address_name;
-    private String street_name;
-    private long countryId;
+public class CardTypeRequest {
+    private String card_type_name;
 }

@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressRequest {
-    private String address_name;
-    private String street_name;
-    private long countryId;
+public class TransactionRequest {
+    private String transaction_name;
+    private Long cardId;
+    private Long transactionTypeId;
 }
