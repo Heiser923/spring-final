@@ -20,9 +20,9 @@ public class GlobalRestControllerAdvice {
                 HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = {TranscationException.class})
+    @ExceptionHandler(value = {TransactionException.class})
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ErrorResource> genericException(TranscationException exception) {
+    public ResponseEntity<ErrorResource> genericException(TransactionException exception) {
         exception.printStackTrace();
         return new ResponseEntity<>(ErrorResource.builder()
                 .code(exception.getCode())

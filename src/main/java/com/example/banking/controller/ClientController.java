@@ -1,5 +1,7 @@
 package com.example.banking.controller;
 
+import com.example.banking.configuration.exceptions.NotFoundException;
+import com.example.banking.configuration.exceptions.TransactionException;
 import com.example.banking.entities.Address;
 import com.example.banking.entities.Client;
 import com.example.banking.entities.enums.Gender;
@@ -49,7 +51,12 @@ public class ClientController {
 
     @DeleteMapping("/{id}")
     public ApiResponse deleteClient(@PathVariable Long id){
-        if (clientService.deleteById(id)) return new ApiResponse(ApiStatus.FAI_DELETED.getCode(), ApiStatus.FAI_DELETED.getMessage());
+        try {
+            clientService.deleteById(id);
+        } catch (NotFoundException e) {
+            throw new TransactionException(ApiStatus.FAI_DELETED.getCode(), ApiStatus.FAI_DELETED.getMessage());
+        }
+
         return new ApiResponse(ApiStatus.SUC_DELETED.getCode(), ApiStatus.SUC_DELETED.getMessage());
     }
 

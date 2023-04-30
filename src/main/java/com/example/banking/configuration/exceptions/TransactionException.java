@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Data
 @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR,value = HttpStatus.INTERNAL_SERVER_ERROR,reason = "Internal Server Error!")
-public class TranscationException extends RuntimeException {
+public class TransactionException extends RuntimeException {
 
     private String code;
     private String message;
 
 
-    public TranscationException(String code, String message) {
+    public TransactionException(String code, String message) {
         this.code = code;
         this.message = message;
     }

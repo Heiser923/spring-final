@@ -1,5 +1,6 @@
 package com.example.banking.service.impl;
 
+import com.example.banking.configuration.exceptions.NotFoundException;
 import com.example.banking.entities.Client;
 import com.example.banking.repository.ClientRepository;
 import com.example.banking.service.ClientService;
@@ -21,17 +22,13 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client findById(Long id) {
-        return clientRepository.findById(id).orElse(null);
+        return clientRepository.findById(id).orElseThrow( () -> new NotFoundException());
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        Client client = clientRepository.findById(id).orElse(null);
-        if(!ObjectUtils.isEmpty(client)){
-            clientRepository.deleteById(id);
-            return false;
-        }
-        return true;
+    public void deleteById(Long id) {
+        this.findById(id);
+        clientRepository.deleteById(id);
     }
 
     @Override
