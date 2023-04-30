@@ -1,9 +1,14 @@
 package com.example.banking.service.impl;
 
+import com.example.banking.configuration.exceptions.NotFoundException;
+import com.example.banking.entities.Card;
 import com.example.banking.entities.CardStatus;
 import com.example.banking.entities.Country;
+import com.example.banking.entities.response.Pagination;
 import com.example.banking.repository.CardStatusRepository;
 import com.example.banking.service.CardStatusService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -24,32 +29,28 @@ public class CardStatusServiceImpl implements CardStatusService {
 
     @Override
     public CardStatus findById(Long id) {
-        return cardStatusRepository.findById(id).orElse(null);
+        return cardStatusRepository.findById(id).orElseThrow(() -> new NotFoundException());
     }
 
     @Override
-    public String deleteById(Long id) {
-        CardStatus cardStatus = cardStatusRepository.findById(id).orElse(null);
-        if(!ObjectUtils.isEmpty(cardStatus)){
-            cardStatusRepository.deleteById(id);
-            return "Country Has Been Deleted";
-        }
-        return "Country " + id + " Doesn't Exist In The World";
+    public void deleteById(Long id) {
+        this.findById(id);
+        cardStatusRepository.deleteById(id);
     }
 
     @Override
-    public String updateById(Long id, CardStatus cardStatus) {
+    public void updateById(Long id, CardStatus cardStatus) {
         CardStatus cardStatusToUpdate = this.findById(id);
         if(!ObjectUtils.isEmpty(cardStatusToUpdate)){
             cardStatusToUpdate.setStatus(cardStatus.getStatus());
             cardStatusRepository.save(cardStatusToUpdate);
-            return "Update Successfully";
         }
-        return "Update Not Successfully";
     }
 
     @Override
-    public List<CardStatus> getAll() {
-        return cardStatusRepository.findAll();
+    public List<CardStatus> getAll(Pagination pagination) {
+        Page<CardStatus> cardStatuses = cardStatusRepository.findAll(PageRequest.of(pagination.getIndexPageable(), pagination.getSize()));
+        pagination.setTotalCounts(cardStatuses.getTotalElements());
+        return cardStatuses.getContent();
     }
 }

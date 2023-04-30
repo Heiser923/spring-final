@@ -1,8 +1,13 @@
 package com.example.banking.service.impl;
 
+import com.example.banking.configuration.exceptions.NotFoundException;
+import com.example.banking.entities.CardStatus;
 import com.example.banking.entities.Country;
+import com.example.banking.entities.response.Pagination;
 import com.example.banking.repository.CountryRepository;
 import com.example.banking.service.CountryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -23,32 +28,28 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Country findById(Long id) {
-        return countryRepository.findById(id).orElse(null);
+        return countryRepository.findById(id).orElseThrow(() -> new NotFoundException());
     }
 
     @Override
-    public String deleteById(Long id) {
-        Country country = countryRepository.findById(id).orElse(null);
-        if(!ObjectUtils.isEmpty(country)){
-            countryRepository.deleteById(id);
-            return "Country Has Been Deleted";
-        }
-        return "Country " + id + " Doesn't Exist In The World";
+    public void deleteById(Long id) {
+        this.findById(id);
+        countryRepository.deleteById(id);
     }
 
     @Override
-    public String updateById(Long id, Country country) {
+    public void updateById(Long id, Country country) {
         Country countryToUpdate = this.findById(id);
         if(!ObjectUtils.isEmpty(countryToUpdate)){
             countryToUpdate.setCountry_name(country.getCountry_name());
             countryRepository.save(countryToUpdate);
-            return "Update Successfully";
         }
-        return "Update Not Successfully";
     }
 
     @Override
-    public List<Country> getAll() {
-        return countryRepository.findAll();
+    public List<Country> getAll(Pagination pagination) {
+        Page<Country> countries = countryRepository.findAll(PageRequest.of(pagination.getIndexPageable(), pagination.getSize()));
+        pagination.setTotalCounts(countries.getTotalElements());
+        return countries.getContent();
     }
 }

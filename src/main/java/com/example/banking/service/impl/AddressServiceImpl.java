@@ -1,8 +1,13 @@
 package com.example.banking.service.impl;
 
+import com.example.banking.configuration.exceptions.NotFoundException;
+import com.example.banking.entities.Account;
 import com.example.banking.entities.Address;
+import com.example.banking.entities.response.Pagination;
 import com.example.banking.repository.AddressRepository;
 import com.example.banking.service.AddressService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -22,32 +27,28 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Address findById(Long id) {
-        return addressRepository.findById(id).orElse(null);
+        return addressRepository.findById(id).orElseThrow(() -> new NotFoundException());
     }
 
     @Override
-    public String deleteById(Long id) {
-        Address address = addressRepository.findById(id).orElse(null);
-        if(!ObjectUtils.isEmpty(address)){
-            addressRepository.deleteById(id);
-            return "Address Has Been Deleted";
-        }
-        return "Address " + id + " Doesn't Exist In The World";
+    public void deleteById(Long id) {
+        this.findById(id);
+        addressRepository.deleteById(id);
     }
 
     @Override
-    public String updateById(Long id, Address address) {
+    public void updateById(Long id, Address address) {
         Address addressToUpdate = this.findById(id);
         if(!ObjectUtils.isEmpty(addressToUpdate)){
             addressToUpdate.setAddress_name(address.getAddress_name());
             addressRepository.save(addressToUpdate);
-            return "Update Successfully";
         }
-        return "Update Not Successfully";
     }
 
     @Override
-    public List<Address> getAll() {
-        return addressRepository.findAll();
+    public List<Address> getAll(Pagination pagination) {
+        Page<Address> addresses = addressRepository.findAll(PageRequest.of(pagination.getIndexPageable(), pagination.getSize()));
+        pagination.setTotalCounts(addresses.getTotalElements());
+        return addresses.getContent();
     }
 }

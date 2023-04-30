@@ -1,7 +1,13 @@
 package com.example.banking.controller;
 
+import com.example.banking.configuration.exceptions.NotFoundException;
+import com.example.banking.configuration.exceptions.TransactionException;
+import com.example.banking.entities.Country;
 import com.example.banking.entities.Permission;
 import com.example.banking.entities.Role;
+import com.example.banking.entities.response.ApiResponse;
+import com.example.banking.entities.response.ApiStatus;
+import com.example.banking.entities.response.Pagination;
 import com.example.banking.request.PermissionRequest;
 import com.example.banking.service.PermissionService;
 import com.example.banking.service.RoleService;
@@ -23,37 +29,49 @@ public class PermissionController {
         this.roleService = roleService;
     }
     @PostMapping
-    public String addPermission(@RequestBody PermissionRequest req){
-        Role role = roleService.findById(req.getRoleId());
-
-        if (role == null) {
-            return "Role not found";
+    public ApiResponse addPermission(@RequestBody PermissionRequest req){
+        Role role;
+        try {
+            role = roleService.findById(req.getRoleId());
+        } catch (NotFoundException e) {
+            throw new TransactionException(ApiStatus.SUC_CREATED.getCode(), ApiStatus.SUC_CREATED.getMessage());
         }
-
         Permission permission = new Permission();
         permission.setPermission_name(req.getPermission_name());
         permission.setRole(role);
 
         permissionService.addPermission(permission);
-        return req.toString();
+        return new ApiResponse(ApiStatus.SUC_CREATED.getCode(), ApiStatus.SUC_CREATED.getMessage());
     }
     @GetMapping("/{id}")
-    public Permission getPermissionId(@PathVariable Long id){
-        return permissionService.findById(id);
+    public ApiResponse<Permission> getPermissionId(@PathVariable Long id){
+        Permission permission = permissionService.findById(id);
+        return new ApiResponse<Permission>(ApiStatus.SUC_RETRIEVED.getCode(), ApiStatus.SUC_RETRIEVED.getMessage());
     }
     @DeleteMapping("/{id}")
-    public String deletePermission(@PathVariable Long id){
-        return permissionService.deleteById(id);
+    public ApiResponse deletePermission(@PathVariable Long id){
+        try {
+            permissionService.deleteById(id);
+        } catch (NotFoundException e){
+            throw new TransactionException(ApiStatus.FAI_DELETED.getCode(), ApiStatus.FAI_DELETED.getMessage());
+        }
+        return new ApiResponse(ApiStatus.SUC_DELETED.getCode(), ApiStatus.SUC_DELETED.getMessage());
     }
 
     @PutMapping("/{id}")
-    public String updatePermission(@PathVariable Long id, @RequestBody PermissionRequest req){
-        Permission permission = new Permission();
-        BeanUtils.copyProperties(req, permission);
-        return permissionService.updateById(id, permission);
+    public ApiResponse updatePermission(@PathVariable Long id, @RequestBody PermissionRequest req){
+        try {
+            Permission permission = new Permission();
+            BeanUtils.copyProperties(req, permission);
+            permissionService.updateById(id, permission);
+        } catch (NotFoundException e) {
+            throw new TransactionException(ApiStatus.FAI_UPDATED.getCode(), ApiStatus.FAI_UPDATED.getMessage());
+        }
+        return new ApiResponse(ApiStatus.SUC_UPDATED.getCode(), ApiStatus.SUC_UPDATED.getMessage());
     }
     @GetMapping
-    public List<Permission> getAllPermission(){
-        return permissionService.getAll();
+    public ApiResponse<List<Permission>> getAllPermission(Pagination pagination){
+        List<Permission> permissions = permissionService.getAll(pagination);
+        return new ApiResponse<List<Permission>>(ApiStatus.SUC_RETRIEVED.getCode(), ApiStatus.SUC_RETRIEVED.getMessage(), permissions, pagination);
     }
 }
