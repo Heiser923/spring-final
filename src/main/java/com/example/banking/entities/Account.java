@@ -21,7 +21,4 @@ public class Account extends Base {
     @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL , orphanRemoval = true)
     @JsonIgnoreProperties("accounts")
     private List<Card> cards;
-
-    @ManyToOne
-    private Loan loan;
 }

@@ -31,5 +31,7 @@ public class Card extends Base {
     @JsonIgnoreProperties({"card_type","card"})
     private CardType card_type;
     @ManyToOne
+    @JoinColumn(name="card_processor")
+    @JsonIgnoreProperties("card_processor")
     private CardProcessor card_processor;
 }

@@ -29,10 +29,11 @@ public class BankDetailController {
             BankDetail bankDetail = new BankDetail();
             BeanUtils.copyProperties(req, bankDetail);
             bankDetailService.addBankDetail(bankDetail);
+            return new ApiResponse(ApiStatus.SUC_CREATED.getCode(), ApiStatus.SUC_CREATED.getMessage());
         } catch (NotFoundException e) {
+            System.out.println(req.toString());
             throw new TransactionException(ApiStatus.FAI_CREATED.getCode(), ApiStatus.FAI_CREATED.getMessage());
         }
-        return new ApiResponse(ApiStatus.SUC_CREATED.getCode(), ApiStatus.SUC_CREATED.getMessage());
     }
 
     @PutMapping

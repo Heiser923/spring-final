@@ -5,14 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
-import java.util.List;
 
+import java.util.List;
 @Entity
 @Data
-public class CardProcessor extends Base {
-    private String processor_name;
+public class UserStatus extends Base {
+    private String user_status;
 
-    @OneToMany(mappedBy = "card_processor")
-    @JsonIgnoreProperties({"card_processor"})
-    private List<Card> card_processor;
+    @OneToMany(mappedBy = "user_status")
+    @JsonIgnoreProperties({"status", "user_status"})
+    private List<User> status;
 }
