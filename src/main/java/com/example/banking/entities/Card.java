@@ -30,5 +30,7 @@ public class Card extends Base {
     @ManyToOne
     private Permission cardPermission;
     @ManyToOne
+    @JoinColumn(name="card_processor")
+    @JsonIgnoreProperties("card_processor")
     private CardProcessor card_processor;
 }

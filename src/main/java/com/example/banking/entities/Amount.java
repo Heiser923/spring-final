@@ -11,8 +11,12 @@ import java.util.Set;
 @Entity
 @Data
 public class Amount extends Base {
+<<<<<<< Updated upstream
     private Float amount;
 
     @OneToMany(mappedBy = "loan_amount")
     private Set<Loan> loans = new HashSet<>();
+=======
+    private float amount;
+>>>>>>> Stashed changes
 }

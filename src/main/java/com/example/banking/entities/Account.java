@@ -18,9 +18,15 @@ public class Account extends Base {
     @ManyToOne
     private Client client;
 
+<<<<<<< Updated upstream
     @OneToMany(mappedBy = "account")
     private Set<Card> cards = new HashSet<>();
 
     @ManyToOne
     private Loan loan;
+=======
+    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL , orphanRemoval = true)
+    @JsonIgnoreProperties("accounts")
+    private List<Card> cards;
+>>>>>>> Stashed changes
 }
