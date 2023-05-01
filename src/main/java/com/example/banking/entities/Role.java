@@ -1,22 +1,18 @@
 package com.example.banking.entities;
 
 import com.example.banking.entities.bases.Base;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
 public class Role extends Base {
     private String role_name;
-<<<<<<< Updated upstream
 
-    @OneToMany(mappedBy = "Permission_role")
-    private Set<Permission> permissions = new HashSet<>();
-=======
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL , orphanRemoval = true)
     @JsonIgnoreProperties("role")
     private List<Permission> permissions;
@@ -24,5 +20,4 @@ public class Role extends Base {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL , orphanRemoval = true)
     @JsonIgnoreProperties("user")
     private List<User> user;
->>>>>>> Stashed changes
 }
