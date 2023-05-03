@@ -17,6 +17,11 @@ public class Transaction extends Base {
     private Card cards;
 
     @ManyToOne
+    @JoinColumn(name="amount")
+    @JsonIgnoreProperties({"amount"})
+    private Amount amount;
+
+    @ManyToOne
     @JoinColumn(name = "transaction")
     @JsonIgnoreProperties({"transaction", "cards", "accounts"})
     private TransactionType transaction;

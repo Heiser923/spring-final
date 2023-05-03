@@ -2,6 +2,7 @@ package com.example.banking.controller;
 
 import com.example.banking.configuration.exceptions.NotFoundException;
 import com.example.banking.configuration.exceptions.TransactionException;
+import com.example.banking.entities.Amount;
 import com.example.banking.entities.Card;
 import com.example.banking.entities.Transaction;
 import com.example.banking.entities.TransactionType;
@@ -9,6 +10,7 @@ import com.example.banking.entities.response.ApiResponse;
 import com.example.banking.entities.response.ApiStatus;
 import com.example.banking.entities.response.Pagination;
 import com.example.banking.request.TransactionRequest;
+import com.example.banking.service.AmountService;
 import com.example.banking.service.CardService;
 import com.example.banking.service.TransactionService;
 import com.example.banking.service.TransactionTypeService;
@@ -23,20 +25,24 @@ import java.util.List;
 public class TransactionController {
     private TransactionTypeService transactionTypeService;
     private TransactionService transactionService;
+    private AmountService amountService;
     private CardService cardService;
-    public TransactionController(TransactionService transactionService, CardService cardService,TransactionTypeService transactionTypeService){
+    public TransactionController(TransactionService transactionService, CardService cardService,TransactionTypeService transactionTypeService, AmountService amountService){
         this.transactionService = transactionService;
         this.cardService = cardService;
         this.transactionTypeService = transactionTypeService;
+        this.amountService = amountService;
     }
 
     @PostMapping
     public ApiResponse addTransaction(@RequestBody TransactionRequest req){
         Card card;
         TransactionType transactionType;
+        Amount amount;
         try {
             card = cardService.findById(req.getCardId());
             transactionType = transactionTypeService.findById(req.getTransactionTypeId());
+            amount = amountService.findById(req.getAmountId());
         } catch (NotFoundException e) {
             throw new TransactionException(ApiStatus.FAI_CREATED.getCode(), ApiStatus.FAI_CREATED.getMessage());
         }
@@ -44,6 +50,7 @@ public class TransactionController {
         BeanUtils.copyProperties(req, transaction);
         transaction.setCards(card);
         transaction.setTransaction(transactionType);
+        transaction.setAmount(amount);
         transactionService.addTransaction(transaction);
         return new ApiResponse(ApiStatus.SUC_CREATED.getCode(), ApiStatus.SUC_CREATED.getMessage());
     }
