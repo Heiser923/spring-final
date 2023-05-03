@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransactionRequest {
-    private String transaction_name;
-    private Long cardId;
-    private Long AmountId;
-    private Long transactionTypeId;
+public class AmountRequest {
+    private Float amount;
 }
