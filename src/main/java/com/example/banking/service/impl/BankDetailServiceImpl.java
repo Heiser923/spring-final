@@ -32,7 +32,6 @@ public class BankDetailServiceImpl implements BankDetailService {
         BankDetail bankDetail1 = bankDetailRepository.findById(1L).orElse(null);
         if ( bankDetail1 == null) {
             bankDetailRepository.save(bankDetail);
-        return bankDetailRepository.findById(1L).orElse(null);
-    }
+        }
     }
 }
