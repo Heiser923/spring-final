@@ -34,4 +34,5 @@ public class BankDetailServiceImpl implements BankDetailService {
             bankDetailRepository.save(bankDetail);
         }
     }
+
 }
